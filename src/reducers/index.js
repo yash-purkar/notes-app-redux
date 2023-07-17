@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
-import { todoReducer } from "./todoReducer";
+import { noteReducer } from "./noteReducer";
 
 export const rootReducer = combineReducers({
-  todoReducer
+  noteReducer
 })

@@ -17,3 +17,17 @@ export const deleteNote = (id) => {
     payload: id
   }
 }
+
+export const editNote = (id) => {
+  return {
+    type: "SET_EDIT_NOTE_ID",
+    payload: id
+  }
+}
+
+export const updateData = (updatedData) => {
+  return {
+    type: "NOTE_OPERATIONS",
+    payload: updatedData
+  }
+}

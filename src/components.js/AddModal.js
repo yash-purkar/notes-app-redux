@@ -1,15 +1,27 @@
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux';
-import { addNewNote } from '../actions';
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { addNewNote, updateData } from '../actions';
 
 export const AddModal = ({ setShowModal }) => {
 
-  const [noteDetails, setNoteDetails] = useState({
-    title: "",
-    note: ""
-  });
+  const data = useSelector(state => state.noteReducer);
+
+  const [noteDetails, setNoteDetails] = useState();
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (data?.editNoteId) {
+      const noteToBeEdit = data?.notesData?.find(el => el?.id === data?.editNoteId);
+      setNoteDetails(noteToBeEdit)
+    }
+    else {
+      setNoteDetails({
+        title: "",
+        note: ""
+      })
+    }
+  }, [])
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,9 +29,15 @@ export const AddModal = ({ setShowModal }) => {
   }
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (noteDetails?.title && noteDetails?.note) {
-      dispatch(addNewNote(noteDetails));
+      if (data?.editNoteId) {
+        const updatedData = data?.notesData?.map(el => el?.id === data?.editNoteId ? noteDetails : el)
+        dispatch(updateData(updatedData))
+      }
+      else {
+        dispatch(addNewNote(noteDetails));
+      }
       setShowModal(false)
     }
     else {
