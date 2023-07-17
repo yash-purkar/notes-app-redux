@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { addNewNote, updateData } from '../actions';
+import { toast } from 'react-toastify';
 
 export const AddModal = ({ setShowModal }) => {
 
@@ -9,6 +10,7 @@ export const AddModal = ({ setShowModal }) => {
   const [noteDetails, setNoteDetails] = useState();
 
   const dispatch = useDispatch();
+
 
   useEffect(() => {
     if (data?.editNoteId) {
@@ -33,15 +35,17 @@ export const AddModal = ({ setShowModal }) => {
     if (noteDetails?.title && noteDetails?.note) {
       if (data?.editNoteId) {
         const updatedData = data?.notesData?.map(el => el?.id === data?.editNoteId ? noteDetails : el)
-        dispatch(updateData(updatedData))
+        dispatch(updateData(updatedData));
+        toast.success("Updated")
       }
       else {
         dispatch(addNewNote(noteDetails));
+        toast.success("Added")
       }
       setShowModal(false)
     }
     else {
-      alert("Fill the data")
+      toast.warning("Please fill the data")
     }
   }
 
